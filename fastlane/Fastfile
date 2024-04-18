@@ -1,0 +1,90 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+fastlane_require 'dotenv'
+
+default_platform(:android)
+
+platform :android do
+  before_all do
+      Dotenv.overload '.env.secret'
+      sh("git fetch")
+    end
+
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+#     increment_version_code(
+#           gradle_file_path: "./app/build.gradle"
+#         )
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+
+  desc "Distribute app using Firebase App Distribution"
+    lane :distribute do
+
+      branchExp = "^main$"
+
+      ensure_git_branch(
+        branch: branchExp
+      )
+
+#       increment_version_code(
+#         gradle_file_path: "./app/build.gradle"
+#       )
+
+      gradle(task: "clean")
+
+      gradle(
+        task: "assemble",
+#         flavor: "Dev",
+        build_type: "debug"
+      )
+
+      firebase_app_distribution(
+        app: "1:111410934992:android:7e52a9369588bb6609dad5",
+        release_notes_file: "./release-notes.txt",
+        testers_file: "./testers.txt",
+        firebase_cli_path: "/usr/local/bin/firebase",
+        apk_path: "./app/build/outputs/apk/debug/app-debug.apk"
+      )
+
+      # new_version = get_version_name(
+      #   gradle_file_path:"./app/build.gradle",
+      #   ext_constant_name:"versionName"
+      # )
+
+      # Optional
+      # sh("git checkout -b 'version-bump-#{new_version}'")
+      # sh "git commit -am 'Version bump to #{new_version}'"
+      # push_to_git_remote
+    end
+
+
+end

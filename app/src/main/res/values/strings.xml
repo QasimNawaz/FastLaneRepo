@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">FastLaneRepo</string>
+
+    <string name="default_web_client_id" translatable="false">111410934992-057fcufvmlsejr0o78c374cnbqc6v52n.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">111410934992</string>
+    <string name="google_api_key" translatable="false">AIzaSyB68zf1vKcOjQ0mXFzakZ74RjUlKSk45wI</string>
+    <string name="google_app_id" translatable="false">1:111410934992:android:7e52a9369588bb6609dad5</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyB68zf1vKcOjQ0mXFzakZ74RjUlKSk45wI</string>
+    <string name="google_storage_bucket" translatable="false">fastlane-repo.appspot.com</string>
+    <string name="project_id" translatable="false">fastlane-repo</string>
 </resources>
